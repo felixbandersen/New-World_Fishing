@@ -7,13 +7,6 @@ import time
 d = Desktop()
 
 
-
-
-
-
-
-
-
 @task
 def minimal_task():
     #Making an forever loop.
