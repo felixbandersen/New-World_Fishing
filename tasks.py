@@ -31,7 +31,9 @@ def minimal_task():
         cast(cast_time)
         #If the cast fails it will restart the loop.
         try:
-            cast_into_water()
+            line_broke=cast_into_water()
+            if line_broke == True:
+                continue
         except:
             time.sleep(7)
             continue
@@ -82,16 +84,20 @@ def cast(cast_time: int):
 
 
 def cast_into_water():
-    hook=d.wait_for_element('image:data/hook.png', timeout=120, interval=0.2)
-    d.click(hook)
+    try:
+        hook=d.wait_for_element('image:data/hook.png', timeout=30, interval=0.1)
+        d.click(hook)
+    except:
+        line_broke = True
+        print('Missed the fish!')
+        return line_broke
     
 
 def reel_it_inn():
-    result = None
-    while result is None:
+    count = 0
+    while count <= 12:
         try:
             d.find_element('image:data/f3.png')
-            result = True
         except:
             reel_time = random.uniform(1, 2.5)
             reel_sleep = random.uniform(0.75, 1.5)
@@ -100,6 +106,14 @@ def reel_it_inn():
             time.sleep(reel_time)
             d.release_mouse_button()
             time.sleep(reel_sleep)
+            count = count + 1
+            print(f'Times reeled:{count}')
+            try:
+                d.find_element('image:data/f3.png')
+                break
+            except:
+                continue
+            
             
 
 
